@@ -1,0 +1,26 @@
+{
+  "name": "Engagement Invitation | Belal & Habiba",
+  "short_name": "Belal & Habiba",
+  "description": "We invite you to celebrate our engagement - Sunday, September 20, 2026 at VIP Hall, Maryoutiya",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FBF8F3",
+  "theme_color": "#215589",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "./assets/engagement.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/engagement.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
