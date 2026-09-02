@@ -984,6 +984,69 @@
       box-shadow: 0 8px 22px rgba(33, 85, 137, 0.35);
       background-color: var(--primary-royal);
     }
+
+    /* ==========================================================================
+       6. LANGUAGE SWITCHER
+       ========================================================================== */
+    .lang-switcher {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border-radius: var(--radius-full);
+      background: var(--bg-cream-card);
+      border: 1.5px solid var(--primary-blue);
+      box-shadow: var(--shadow-md);
+    }
+
+    .lang-switcher-btn {
+      min-width: 38px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: var(--radius-full);
+      background: transparent;
+      color: var(--primary-blue);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      line-height: 1;
+    }
+
+    .lang-switcher-btn:hover {
+      background: rgba(33, 85, 137, 0.08);
+    }
+
+    .lang-switcher-btn.active {
+      background: var(--primary-blue);
+      color: #FBF8F3;
+      box-shadow: 0 2px 8px rgba(33, 85, 137, 0.3);
+    }
+
+    html[dir="rtl"] .couple-photos-container,
+    html[dir="rtl"] .reception-date-row,
+    html[dir="rtl"] .calendar-wrapper-cfb,
+    html[dir="rtl"] .cal-weekdays-grid,
+    html[dir="rtl"] .cal-days-grid {
+      direction: ltr;
+    }
+
+    html[dir="rtl"] .envelope-subtitle,
+    html[dir="rtl"] .save-the-date-tag,
+    html[dir="rtl"] .person-role-tag,
+    html[dir="rtl"] .reception-heading,
+    html[dir="rtl"] .reception-subheading,
+    html[dir="rtl"] .countdown-title-text,
+    html[dir="rtl"] .btn-google-maps,
+    html[dir="rtl"] .btn-open-invitation {
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 <body>
@@ -1002,8 +1065,15 @@
     <source src="assets/bg-music.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Language Switcher -->
+  <div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language">
+    <button type="button" class="lang-switcher-btn active" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" class="lang-switcher-btn" data-lang="ar" aria-pressed="false">ع</button>
+    <button type="button" class="lang-switcher-btn" data-lang="es" aria-pressed="false">ES</button>
+  </div>
+
   <!-- Floating Audio Button -->
-  <button class="music-player-btn" id="music-toggle-btn" aria-label="Toggle background music">
+  <button class="music-player-btn" id="music-toggle-btn" data-i18n-aria="toggleMusic" aria-label="Toggle background music">
     <div class="music-disc" id="music-disc-icon">
       <svg viewBox="0 0 24 24">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
@@ -1035,7 +1105,7 @@
       <img src="assets/flower2.webp" alt="" class="envelope-flower-decor flower-decor-tl" aria-hidden="true">
       <img src="assets/flower3.webp" alt="" class="envelope-flower-decor flower-decor-br" aria-hidden="true">
 
-      <div class="envelope-subtitle">Engagement Invitation</div>
+      <div class="envelope-subtitle" data-i18n="envelopeSubtitle">Engagement Invitation</div>
       
       <!-- Flowing Script Couple Names -->
       <h1 class="envelope-names">Belal &amp; Habiba</h1>
@@ -1046,11 +1116,11 @@
         <div class="envelope-divider-line"></div>
       </div>
 
-      <div class="envelope-date">Sunday, September 20, 2026</div>
-      <p class="envelope-invite-text">Together with our families, we invite you to celebrate our engagement</p>
+      <div class="envelope-date" data-i18n="envelopeDate">Sunday, September 20, 2026</div>
+      <p class="envelope-invite-text" data-i18n="envelopeInviteText">Together with our families, we invite you to celebrate our engagement</p>
 
       <button type="button" class="btn-open-invitation" id="btn-open-envelope">
-        <span>Open</span>
+        <span data-i18n="btnOpen">Open</span>
       </button>
     </div>
   </div>
@@ -1069,7 +1139,7 @@
         <div class="quran-verse-text">
           ﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾
         </div>
-        <div class="quran-surah-tag">سورة الروم: آية ٢١</div>
+        <div class="quran-surah-tag" data-i18n="quranSurahTag">سورة الروم: آية ٢١</div>
       </div>
 
       <!-- Porcelain Floral & Gold Wreath Frame Header -->
@@ -1077,15 +1147,15 @@
         <img src="assets/flower-frame.webp" alt="" class="wreath-frame-img" aria-hidden="true">
         
         <div class="wreath-inner-content">
-          <span class="save-the-date-tag">Save The Date</span>
+          <span class="save-the-date-tag" data-i18n="saveTheDate">Save The Date</span>
           
           <span class="names-script-text">Belal</span>
-          <span class="person-role-tag">Groom</span>
+          <span class="person-role-tag" data-i18n="groom">Groom</span>
           
           <span class="ampersand-script">&amp;</span>
           
           <span class="names-script-text">Habiba</span>
-          <span class="person-role-tag">Bride</span>
+          <span class="person-role-tag" data-i18n="bride">Bride</span>
         </div>
       </div>
 
@@ -1096,8 +1166,8 @@
           <div class="photo-img-wrapper">
             <img src="assets/childhood.jpg" alt="Belal and Habiba Childhood" loading="eager" fetchpriority="high">
           </div>
-          <div class="photo-caption-title">Childhood</div>
-          <div class="photo-caption-sub">Where it all began</div>
+          <div class="photo-caption-title" data-i18n="childhood">Childhood</div>
+          <div class="photo-caption-sub" data-i18n="childhoodSub">Where it all began</div>
         </div>
 
         <!-- Current Photo -->
@@ -1105,8 +1175,8 @@
           <div class="photo-img-wrapper">
             <img src="assets/engagement.jpg" alt="Belal and Habiba Engagement" loading="eager" fetchpriority="high">
           </div>
-          <div class="photo-caption-title">Forever</div>
-          <div class="photo-caption-sub">Our next chapter</div>
+          <div class="photo-caption-title" data-i18n="forever">Forever</div>
+          <div class="photo-caption-sub" data-i18n="foreverSub">Our next chapter</div>
         </div>
       </div>
 
@@ -1118,25 +1188,25 @@
            ========================================== -->
       <section class="reception-info-section">
         
-        <h2 class="reception-heading">Reception Info</h2>
-        <div class="reception-subheading">The reception will take place at:</div>
+        <h2 class="reception-heading" data-i18n="receptionHeading">Reception Info</h2>
+        <div class="reception-subheading" data-i18n="receptionSubheading">The reception will take place at:</div>
         
         <!-- Large 7:00 PM Display -->
-        <div class="reception-main-time">7:00 PM</div>
+        <div class="reception-main-time" data-i18n="mainTime">7:00 PM</div>
 
         <!-- Date Row -->
         <div class="reception-date-row">
-          <span class="date-part-text">Sunday</span>
+          <span class="date-part-text" data-i18n="dayName">Sunday</span>
           <div class="date-part-divider"></div>
           <span class="date-part-day">20</span>
           <div class="date-part-divider"></div>
-          <span class="date-part-text">September</span>
+          <span class="date-part-text" data-i18n="monthName">September</span>
         </div>
         <div class="reception-year">2026</div>
-        <div class="event-duration-tag">Event Duration: 7:00 PM – 11:00 PM</div>
+        <div class="event-duration-tag" data-i18n="eventDuration">Event Duration: 7:00 PM – 11:00 PM</div>
 
         <!-- Live Countdown -->
-        <div class="countdown-title-text">Countdown</div>
+        <div class="countdown-title-text" data-i18n="countdownTitle">Countdown</div>
         <div class="countdown-live-string" id="countdown-live-text">0 days 0 hours 0 min 0 sec</div>
 
         <!-- Mini Calendar Wrapped in Exact calendar-frame.webp -->
@@ -1144,16 +1214,16 @@
           <img src="assets/calendar-frame.webp" alt="" class="calendar-frame-overlay-img" aria-hidden="true">
 
           <div class="calendar-inner-cfb">
-            <div class="cal-month-title">September 2026</div>
+            <div class="cal-month-title" data-i18n="monthYear">September 2026</div>
 
-            <div class="cal-weekdays-grid">
-              <span class="cal-weekday">Mo</span>
-              <span class="cal-weekday">Tu</span>
-              <span class="cal-weekday">We</span>
-              <span class="cal-weekday">Th</span>
-              <span class="cal-weekday">Fr</span>
-              <span class="cal-weekday">Sa</span>
-              <span class="cal-weekday">Su</span>
+            <div class="cal-weekdays-grid" id="cal-weekdays-grid">
+              <span class="cal-weekday" data-weekday="0">Mo</span>
+              <span class="cal-weekday" data-weekday="1">Tu</span>
+              <span class="cal-weekday" data-weekday="2">We</span>
+              <span class="cal-weekday" data-weekday="3">Th</span>
+              <span class="cal-weekday" data-weekday="4">Fr</span>
+              <span class="cal-weekday" data-weekday="5">Sa</span>
+              <span class="cal-weekday" data-weekday="6">Su</span>
             </div>
 
             <!-- Calendar Grid for September 2026 (Starts on Tuesday) -->
@@ -1206,22 +1276,22 @@
 
         <!-- Add to Calendar Link -->
         <div>
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Engagement+Party+-+Belal+%26+Habiba&dates=20260920T160000Z/20260920T200000Z&details=We+are+delighted+to+invite+you+to+celebrate+the+engagement+of+Belal+%26+Habiba+at+VIP+Hall%2C+Maryoutiya.&location=VIP+Hall%2C+Maryoutiya%2C+Giza%2C+Egypt" target="_blank" rel="noopener noreferrer" class="btn-add-calendar-link">
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Engagement+Party+-+Belal+%26+Habiba&dates=20260920T160000Z/20260920T200000Z&details=We+are+delighted+to+invite+you+to+celebrate+the+engagement+of+Belal+%26+Habiba+at+VIP+Hall%2C+Maryoutiya.&location=VIP+Hall%2C+Maryoutiya%2C+Giza%2C+Egypt" target="_blank" rel="noopener noreferrer" class="btn-add-calendar-link" data-i18n="addToCalendar">
             Add to Calendar
           </a>
         </div>
 
         <!-- Venue & Google Maps Navigation -->
         <div class="venue-info-box">
-          <div class="venue-title-text">VIP Hall - Maryoutiya</div>
-          <div class="venue-address-text">Maryoutiya Road, Giza, Egypt (7:00 PM – 11:00 PM)</div>
+          <div class="venue-title-text" data-i18n="venueTitle">VIP Hall - Maryoutiya</div>
+          <div class="venue-address-text" data-i18n="venueAddress">Maryoutiya Road, Giza, Egypt (7:00 PM – 11:00 PM)</div>
           
           <a href="https://maps.app.goo.gl/MpH77YyZWZ2bjTEUA" target="_blank" rel="noopener noreferrer" class="btn-google-maps">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
-            <span>View on Google Maps</span>
+            <span data-i18n="viewOnMaps">View on Google Maps</span>
           </a>
         </div>
       </section>
@@ -1233,6 +1303,166 @@
        JAVASCRIPT LOGIC
        ========================================================================== -->
   <script>
+    // ==========================================================================
+    // INTERNATIONALIZATION (EN / AR / ES)
+    // ==========================================================================
+    const I18N = {
+      en: {
+        pageTitle: 'Engagement Invitation | Belal & Habiba',
+        metaDescription: 'We invite you to celebrate our engagement - Sunday, September 20, 2026 at VIP Hall, Maryoutiya',
+        envelopeSubtitle: 'Engagement Invitation',
+        envelopeDate: 'Sunday, September 20, 2026',
+        envelopeInviteText: 'Together with our families, we invite you to celebrate our engagement',
+        btnOpen: 'Open',
+        quranSurahTag: 'Surah Ar-Rum: Verse 21',
+        saveTheDate: 'Save The Date',
+        groom: 'Groom',
+        bride: 'Bride',
+        childhood: 'Childhood',
+        childhoodSub: 'Where it all began',
+        forever: 'Forever',
+        foreverSub: 'Our next chapter',
+        receptionHeading: 'Reception Info',
+        receptionSubheading: 'The reception will take place at:',
+        mainTime: '7:00 PM',
+        dayName: 'Sunday',
+        monthName: 'September',
+        eventDuration: 'Event Duration: 7:00 PM – 11:00 PM',
+        countdownTitle: 'Countdown',
+        countdownZero: '0 days 0 hours 0 min 0 sec',
+        addToCalendar: 'Add to Calendar',
+        venueTitle: 'VIP Hall - Maryoutiya',
+        venueAddress: 'Maryoutiya Road, Giza, Egypt (7:00 PM – 11:00 PM)',
+        viewOnMaps: 'View on Google Maps',
+        monthYear: 'September 2026',
+        weekdays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+        countdownLabels: { days: 'days', hours: 'hours', min: 'min', sec: 'sec' },
+        toggleMusic: 'Toggle background music',
+        langGroupLabel: 'Language'
+      },
+      ar: {
+        pageTitle: 'دعوة خطوبة | بلال وحبيبة',
+        metaDescription: 'ندعوكم للاحتفال بخطوبتنا - الأحد ٢٠ سبتمبر ٢٠٢٦ في قاعة VIP، المريوطية',
+        envelopeSubtitle: 'دعوة خطوبة',
+        envelopeDate: 'الأحد، ٢٠ سبتمبر ٢٠٢٦',
+        envelopeInviteText: 'يسرّنا وعائلاتنا دعوتكم للاحتفال بخطوبتنا',
+        btnOpen: 'افتح الدعوة',
+        quranSurahTag: 'سورة الروم: آية ٢١',
+        saveTheDate: 'احفظوا الموعد',
+        groom: 'العريس',
+        bride: 'العروس',
+        childhood: 'الطفولة',
+        childhoodSub: 'حيث بدأت قصتنا',
+        forever: 'للأبد',
+        foreverSub: 'فصلنا القادم',
+        receptionHeading: 'معلومات الحفل',
+        receptionSubheading: 'سيُقام الحفل في:',
+        mainTime: '٧:٠٠ مساءً',
+        dayName: 'الأحد',
+        monthName: 'سبتمبر',
+        eventDuration: 'مدة الحفل: من ٧:٠٠ مساءً إلى ١١:٠٠ مساءً',
+        countdownTitle: 'العد التنازلي',
+        countdownZero: '٠ يوم ٠ ساعة ٠ دقيقة ٠ ثانية',
+        addToCalendar: 'أضف إلى التقويم',
+        venueTitle: 'قاعة VIP - المريوطية',
+        venueAddress: 'طريق المريوطية، الجيزة، مصر (من ٧:٠٠ مساءً إلى ١١:٠٠ مساءً)',
+        viewOnMaps: 'عرض على خرائط جوجل',
+        monthYear: 'سبتمبر ٢٠٢٦',
+        weekdays: ['ن', 'ث', 'ر', 'خ', 'ج', 'س', 'ح'],
+        countdownLabels: { days: 'يوم', hours: 'ساعة', min: 'دقيقة', sec: 'ثانية' },
+        toggleMusic: 'تشغيل/إيقاف الموسيقى',
+        langGroupLabel: 'اللغة'
+      },
+      es: {
+        pageTitle: 'Invitación de Compromiso | Belal y Habiba',
+        metaDescription: 'Les invitamos a celebrar nuestro compromiso - domingo 20 de septiembre de 2026 en VIP Hall, Maryoutiya',
+        envelopeSubtitle: 'Invitación de Compromiso',
+        envelopeDate: 'Domingo, 20 de septiembre de 2026',
+        envelopeInviteText: 'Junto con nuestras familias, les invitamos a celebrar nuestro compromiso',
+        btnOpen: 'Abrir',
+        quranSurahTag: 'Sura Ar-Rum: Versículo 21',
+        saveTheDate: 'Reserva la Fecha',
+        groom: 'Novio',
+        bride: 'Novia',
+        childhood: 'Infancia',
+        childhoodSub: 'Donde todo comenzó',
+        forever: 'Para Siempre',
+        foreverSub: 'Nuestro próximo capítulo',
+        receptionHeading: 'Información de la Recepción',
+        receptionSubheading: 'La recepción tendrá lugar en:',
+        mainTime: '7:00 PM',
+        dayName: 'Domingo',
+        monthName: 'Septiembre',
+        eventDuration: 'Duración del evento: 7:00 PM – 11:00 PM',
+        countdownTitle: 'Cuenta Regresiva',
+        countdownZero: '0 días 0 horas 0 min 0 seg',
+        addToCalendar: 'Añadir al Calendario',
+        venueTitle: 'VIP Hall - Maryoutiya',
+        venueAddress: 'Carretera Maryoutiya, Giza, Egipto (7:00 PM – 11:00 PM)',
+        viewOnMaps: 'Ver en Google Maps',
+        monthYear: 'Septiembre 2026',
+        weekdays: ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'],
+        countdownLabels: { days: 'días', hours: 'horas', min: 'min', sec: 'seg' },
+        toggleMusic: 'Activar/desactivar música de fondo',
+        langGroupLabel: 'Idioma'
+      }
+    };
+
+    let currentLang = 'en';
+
+    function formatCountdown(diff, labels) {
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      return `${days} ${labels.days} ${hours} ${labels.hours} ${minutes} ${labels.min} ${seconds} ${labels.sec}`;
+    }
+
+    function applyLanguage(lang) {
+      if (!I18N[lang]) return;
+      currentLang = lang;
+
+      const t = I18N[lang];
+      const html = document.documentElement;
+      html.lang = lang === 'ar' ? 'ar' : (lang === 'es' ? 'es' : 'en');
+      html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+      document.title = t.pageTitle;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', t.metaDescription);
+
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+
+      document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+        const key = el.getAttribute('data-i18n-aria');
+        if (t[key] !== undefined) el.setAttribute('aria-label', t[key]);
+      });
+
+      document.querySelectorAll('.cal-weekday').forEach((el, i) => {
+        if (t.weekdays[i] !== undefined) el.textContent = t.weekdays[i];
+      });
+
+      document.querySelectorAll('.lang-switcher-btn').forEach((btn) => {
+        const isActive = btn.getAttribute('data-lang') === lang;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      const langSwitcher = document.getElementById('lang-switcher');
+      if (langSwitcher) langSwitcher.setAttribute('aria-label', t.langGroupLabel);
+
+      try {
+        localStorage.setItem('invitation-lang', lang);
+      } catch (e) {}
+
+      if (typeof window.__updateCountdownI18n === 'function') {
+        window.__updateCountdownI18n();
+      }
+    }
+
     // Offline: register service worker + warm-cache every local asset on first visit
     (function enableOfflineAccess() {
       const OFFLINE_ASSETS = [
@@ -1310,6 +1540,19 @@
     })();
 
     document.addEventListener('DOMContentLoaded', () => {
+      // 0. Language Switcher
+      const savedLang = (() => {
+        try { return localStorage.getItem('invitation-lang'); } catch (e) { return null; }
+      })();
+      const initialLang = I18N[savedLang] ? savedLang : 'en';
+      applyLanguage(initialLang);
+
+      document.querySelectorAll('.lang-switcher-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          applyLanguage(btn.getAttribute('data-lang'));
+        });
+      });
+
       // 1. Envelope Opening & Wax Seal Logic
       const envelopeOverlay = document.getElementById('envelope-overlay');
       const waxSealBtn = document.getElementById('wax-seal-btn');
@@ -1410,18 +1653,16 @@
       function updateCountdown() {
         const now = new Date().getTime();
         const diff = targetDate - now;
+        const labels = I18N[currentLang].countdownLabels;
 
         if (diff > 0) {
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-          countdownStringEl.textContent = `${days} days ${hours} hours ${minutes} min ${seconds} sec`;
+          countdownStringEl.textContent = formatCountdown(diff, labels);
         } else {
-          countdownStringEl.textContent = '0 days 0 hours 0 min 0 sec';
+          countdownStringEl.textContent = I18N[currentLang].countdownZero;
         }
       }
+
+      window.__updateCountdownI18n = updateCountdown;
 
       updateCountdown();
       setInterval(updateCountdown, 1000);
