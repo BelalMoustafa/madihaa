@@ -1,5 +1,5 @@
 /* Engagement Invitation — Offline Service Worker */
-const CACHE_VERSION = 'engagement-offline-v3';
+const CACHE_VERSION = 'engagement-offline-v4';
 const PRECACHE = [
   './',
   './index.html',
