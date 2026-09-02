@@ -11,6 +11,7 @@
   <meta property="og:description" content="Together with our families, we invite you to celebrate our engagement">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#215589">
+  <meta name="app-version" content="engagement-offline-v3">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Belal &amp; Habiba">
@@ -1463,8 +1464,9 @@
       }
     }
 
-    // Offline: register service worker + warm-cache every local asset on first visit
+    // Offline: register service worker, force updates, then warm-cache assets
     (function enableOfflineAccess() {
+      const APP_VERSION = 'engagement-offline-v3';
       const OFFLINE_ASSETS = [
         './',
         './index.html',
@@ -1526,13 +1528,68 @@
         );
       }
 
+      async function clearAllCaches() {
+        if (!('caches' in window)) return;
+        const keys = await caches.keys();
+        await Promise.all(keys.map((key) => caches.delete(key)));
+      }
+
+      function requestSkipWaiting(worker) {
+        if (worker) worker.postMessage({ type: 'SKIP_WAITING' });
+      }
+
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker
-            .register('./sw.js')
-            .then(() => navigator.serviceWorker.ready)
-            .then(() => warmLocalAssets())
-            .catch((err) => console.log('Service worker registration skipped:', err));
+        let refreshing = false;
+
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (refreshing) return;
+          refreshing = true;
+          window.location.reload();
+        });
+
+        window.addEventListener('load', async () => {
+          try {
+            const storedVersion = localStorage.getItem('app-version');
+            if (storedVersion && storedVersion !== APP_VERSION) {
+              await clearAllCaches();
+              if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ type: 'CLEAR_CACHES' });
+              }
+            }
+            localStorage.setItem('app-version', APP_VERSION);
+
+            const registration = await navigator.serviceWorker.register('./sw.js', {
+              updateViaCache: 'none'
+            });
+
+            if (registration.waiting) {
+              requestSkipWaiting(registration.waiting);
+            }
+
+            registration.addEventListener('updatefound', () => {
+              const installingWorker = registration.installing;
+              if (!installingWorker) return;
+
+              installingWorker.addEventListener('statechange', () => {
+                if (
+                  installingWorker.state === 'installed' &&
+                  navigator.serviceWorker.controller
+                ) {
+                  requestSkipWaiting(installingWorker);
+                }
+              });
+            });
+
+            await navigator.serviceWorker.ready;
+            await registration.update();
+            await warmLocalAssets();
+
+            setInterval(() => {
+              registration.update().catch(() => null);
+            }, 60 * 60 * 1000);
+          } catch (err) {
+            console.log('Service worker registration skipped:', err);
+          }
         });
       } else {
         window.addEventListener('load', () => { warmLocalAssets(); });

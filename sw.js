@@ -1,5 +1,5 @@
 /* Engagement Invitation — Offline Service Worker */
-const CACHE_VERSION = 'engagement-offline-v2';
+const CACHE_VERSION = 'engagement-offline-v3';
 const PRECACHE = [
   './',
   './index.html',
@@ -53,6 +53,59 @@ const PRECACHE = [
   './assets/fonts/montserrat-37.woff2'
 ];
 
+function isShellRequest(request) {
+  if (request.mode === 'navigate') return true;
+
+  const path = new URL(request.url).pathname;
+  return (
+    path.endsWith('/index.html') ||
+    path.endsWith('/') ||
+    path.endsWith('/manifest.webmanifest') ||
+    path.endsWith('/sw.js')
+  );
+}
+
+async function networkFirst(request) {
+  try {
+    const response = await fetch(request);
+    if (response && response.ok) {
+      const cache = await caches.open(CACHE_VERSION);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch (err) {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    return caches.match('./index.html');
+  }
+}
+
+async function cacheFirst(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+
+  const response = await fetch(request);
+  if (response && response.ok) {
+    const cache = await caches.open(CACHE_VERSION);
+    await cache.put(request, response.clone());
+  }
+  return response;
+}
+
+self.addEventListener('message', (event) => {
+  if (!event.data) return;
+
+  if (event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+
+  if (event.data.type === 'CLEAR_CACHES') {
+    event.waitUntil(
+      caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+    );
+  }
+});
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
@@ -63,13 +116,11 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_VERSION)
-          .map((key) => caches.delete(key))
-      )
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys.filter((key) => key !== CACHE_VERSION).map((key) => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
   );
 });
 
@@ -81,18 +132,6 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(request)
-        .then((response) => {
-          if (response && response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_VERSION).then((cache) => cache.put(request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match('./index.html'));
-    })
+    isShellRequest(request) ? networkFirst(request) : cacheFirst(request)
   );
 });
